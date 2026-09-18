@@ -1,122 +1,54 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState, type ChangeEvent } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  // Tipamos os estados para aceitar File/string ou null
+  const [arquivo, setArquivo] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  // Tipamos o evento do input como ChangeEvent<HTMLInputElement>
+  function aoSelecionarArquivo(event: ChangeEvent<HTMLInputElement>) {
+    const arquivoSelecionado = event.target.files?.[0];
+
+    if (arquivoSelecionado) {
+      setArquivo(arquivoSelecionado);
+      setPreview(URL.createObjectURL(arquivoSelecionado));
+    }
+  }
+
+  function limpar() {
+    setArquivo(null);
+    setPreview(null);
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '500px', margin: '0 auto' }}>
+        <h2>Upload de Arquivo (SCRUM-23)</h2>
 
-      <div className="ticks"></div>
+        <input
+            type="file"
+            accept="image/*,application/pdf"
+            capture="environment"
+            onChange={aoSelecionarArquivo}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {preview && (
+            <div style={{ marginTop: '20px' }}>
+              <h3>Preview:</h3>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+              {arquivo?.type.startsWith('image/') && (
+                  <img src={preview} alt="Preview" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }} />
+              )}
+
+              {arquivo?.type === 'application/pdf' && (
+                  <iframe src={preview} title="PDF Preview" style={{ width: '100%', height: '400px' }} />
+              )}
+
+              <br />
+              <button onClick={limpar} style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer' }}>
+                Remover / Trocar Arquivo
+              </button>
+            </div>
+        )}
+      </div>
+  );
 }
-
-export default App
