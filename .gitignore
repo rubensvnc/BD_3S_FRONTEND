@@ -1,0 +1,35 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# IntelliJ IDEA (Permite compartilhar a estrutura do projeto sem subir dados do seu ambiente local)
+.idea/*
+!.idea/vcs.xml
+!.idea/codeStyles
+!.idea/modules.xml
+!.idea/runConfigurations
+*.iml
+
+
+# VS Code e Sistema Operacional
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
