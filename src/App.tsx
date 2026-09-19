@@ -21,8 +21,8 @@ export default function App() {
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
             }
-        } catch {
-            alert('Não foi possível acessar a câmera. Verifique as permissões no navegador.');
+        } catch (err: any) {
+            alert(`Erro na câmera: ${err?.name} - ${err?.message}`);
             fecharCamera();
         }
     }
@@ -174,11 +174,45 @@ export default function App() {
                     )}
 
                     {arquivo?.type === 'application/pdf' && (
-                        <iframe
-                            src={preview}
-                            title="PDF Preview"
-                            style={{ width: '100%', height: '400px', border: '1px solid #ccc', borderRadius: '8px' }}
-                        />
+                        <div style={{
+                            padding: '20px',
+                            backgroundColor: '#f1f5f9',
+                            borderRadius: '8px',
+                            border: '1px solid #cbd5e1',
+                            textAlign: 'center'
+                        }}>
+                            <p style={{ margin: '0 0 10px 0', fontSize: '16px', fontWeight: 'bold' }}>
+                                📄 Documento PDF Selecionado
+                            </p>
+
+                            {/* Renderiza iframe no desktop */}
+                            <div style={{ display: 'none', width: '100%' }} className="desktop-pdf-preview">
+                                <iframe
+                                    src={preview}
+                                    title="PDF Preview"
+                                    style={{ width: '100%', height: '400px', border: '1px solid #ccc', borderRadius: '8px' }}
+                                />
+                            </div>
+
+                            {/* Botão funcional para Mobile e Desktop */}
+                            <a
+                                href={preview}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-block',
+                                    padding: '10px 18px',
+                                    backgroundColor: '#2563eb',
+                                    color: '#fff',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: 'bold',
+                                    marginTop: '5px'
+                                }}
+                            >
+                                👁️ Visualizar PDF em tela cheia
+                            </a>
+                        </div>
                     )}
 
                     <div style={{ marginTop: '10px', fontSize: '14px', color: '#555' }}>
